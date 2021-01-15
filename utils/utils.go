@@ -39,6 +39,7 @@ func Message(result bool, message string) map[string]interface{} {
 	return map[string]interface{}{"result": result, "message": message}
 }
 
+//Hash function encrypts the password. It uses the bcrypt library under the hood.
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

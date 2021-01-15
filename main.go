@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/GhvstCode/shopify-challenge/controllers"
+	"github.com/GhvstCode/shopify-challenge/middleware"
 	l "github.com/GhvstCode/shopify-challenge/utils/logger"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -20,6 +22,14 @@ func handleRequest() {
 	u := r.PathPrefix("/api/v1").Subrouter()
 
 
+	//r.Use(MiddleWare.Jwt2)
+	//Register MiddleWare.
+	r.Use(middleware.Jwt)
+
+	//r.HandleFunc("/", controllers.Home).Methods(http.MethodGet)
+	//r.HandleFunc("/logs", controllers.ViewLog).Methods(http.MethodGet)
+	u.HandleFunc("/login", controllers.Login).Methods(http.MethodPost)
+	u.HandleFunc("/signup", controllers.SignUp).Methods(http.MethodPost)
 
 
 	s := &http.Server{

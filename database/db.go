@@ -2,14 +2,14 @@ package database
 
 import (
 "context"
-"os"
+	l "github.com/GhvstCode/shopify-challenge/utils/logger"
+	"os"
 _ "time"
 
 "github.com/joho/godotenv"
 "go.mongodb.org/mongo-driver/mongo"
 "go.mongodb.org/mongo-driver/mongo/options"
 
-l "github.com/GhvstCode/Shortly/utils/logger"
 )
 var (
 	UserDB *mongo.Collection
@@ -43,6 +43,6 @@ func init() {
 		l.ErrorLogger.Fatal(err)
 	}
 
-	LinkDB = client.Database("Shortly").Collection("link")
-	UserDB = client.Database("Shortly").Collection("user")
+	PhotoDB = client.Database("Shopify").Collection("photo")
+	UserDB = client.Database("Shopify").Collection("user")
 }

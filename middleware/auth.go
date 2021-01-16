@@ -14,6 +14,7 @@ var Jwt = func(next http.Handler) http.Handler {
 		openRoutes := []string{
 			"/api/v1/signup",
 			"/api/v1/login",
+			"/api/v1/upload",
 			"/logs",
 		}
 		requestPath := r.URL.Path

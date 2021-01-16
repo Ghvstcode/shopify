@@ -14,6 +14,7 @@ import (
 
 func main() {
 	//utils.DbCron()
+	handleRequest()
 }
 
 
@@ -30,10 +31,12 @@ func handleRequest() {
 	//r.HandleFunc("/logs", controllers.ViewLog).Methods(http.MethodGet)
 	u.HandleFunc("/login", controllers.Login).Methods(http.MethodPost)
 	u.HandleFunc("/signup", controllers.SignUp).Methods(http.MethodPost)
+	u.HandleFunc("/upload", controllers.UploadImage).Methods(http.MethodPost)
 
 
 	s := &http.Server{
-		Addr:         ":" + os.Getenv("PORT"),
+		//Addr:         ":" + os.Getenv("PORT"),
+		Addr:         ":3000",
 		Handler:      r,
 		IdleTimeout:  5 * time.Minute, //120
 		ReadTimeout:  5 * time.Minute,

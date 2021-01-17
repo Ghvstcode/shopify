@@ -32,7 +32,7 @@ type UserResponse struct {
 	ID string `bson:"_id, omitempty" json:"_id, omitempty"`
 	Email string `bson:"email" json:"email"`
 	Password string `bson:"password" json:"password"`
-	//Links []UserLinkRequest         `bson:"link, omitempty" json:"Link"`
+	ImageLinks []Image         `bson:"imageLink, omitempty" json:"imageLink"`
 }
 
 //containsAny is a simple utility function for checking if the password contains any of the reserved keywords.
@@ -161,20 +161,19 @@ func (U *User) Login() *utils.Data {
 		l.ErrorLogger.Println(err)
 		return utils.Response(false, "Invalid login credentials. Please try again", http.StatusUnauthorized)
 	}
+
 	// CHECK THE DATABASE FOR ALL THE LINKS BELONGING TO THIS USER AD RETURN IT
-	//cursor, err := database.PhotoDB.Find(context.TODO(), bson.M{"ownerId": user.ID, "deleted": false})
-	//
-	//if err != nil {
-	//	l.ErrorLogger.Println(err)
-	//	return utils.Response(false, "An error occured", http.StatusInternalServerError)
-	//}
-	//
-	//var results []UserLinkRequest
-	////var results []bson.M
-	//if err = cursor.All(context.TODO(), &results); err != nil {
-	//	l.ErrorLogger.Println(err)
-	//	return utils.Response(false, "An error occured", http.StatusInternalServerError)
-	//}
+
+	cursor, err := database.PhotoDB.Find(context.TODO(), bson.M{"ownerId": user.ID})
+	if err != nil {
+		l.ErrorLogger.Println(err)
+		return utils.Response(false, "An error occured", http.StatusInternalServerError)
+	}
+	var results []Image
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		l.ErrorLogger.Println(err)
+		return utils.Response(false, "An error occured", http.StatusInternalServerError)
+	}
 
 	var UID string
 	UID = user.ID.Hex()
@@ -190,6 +189,7 @@ func (U *User) Login() *utils.Data {
 		ID:       UID,
 		Email:    user.Email,
 		Password: "",
+		ImageLinks: results,
 	}
 	response := utils.Response(true, "Logged In in", http.StatusCreated)
 	response.Token = t

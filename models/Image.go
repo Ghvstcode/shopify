@@ -34,7 +34,6 @@ type ImageResponse struct {
 
 func Upload(file multipart.File, fileHeader *multipart.FileHeader, id string)*utils.Data{
  	//Validate File to be uploaded to see if they have the right extensions.
-	//
 	bucket := os.Getenv("CLOUD_STORAGE_BUCKET_NAME")
 	ctx := context.Background()
 	storageClient, err := storage.NewClient(ctx, option.WithCredentialsFile("keys.json"))
@@ -114,7 +113,5 @@ func Upload(file multipart.File, fileHeader *multipart.FileHeader, id string)*ut
 	response := utils.Response(true, "created", http.StatusCreated)
 	response.Data = [1]*ImageResponse{v}
 	return response
-
-
 
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/GhvstCode/shopify-challenge/models"
 	"github.com/GhvstCode/shopify-challenge/utils"
 	l "github.com/GhvstCode/shopify-challenge/utils/logger"
@@ -18,7 +17,12 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(fileHeader.Filename)
-	res := models.Upload(file, fileHeader)
+	ownerID := r.Context().Value("user")
+	if ownerID == nil {
+		utils.Response(false, "UnAuthorized Access", http.StatusUnauthorized).Send(w)
+		return
+	}
+
+	res := models.Upload(file, fileHeader, ownerID.(string))
 	res.Send(w)
 }

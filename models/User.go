@@ -146,7 +146,7 @@ func (U *User) Login() *utils.Data {
 	errorChan := make(chan error, 1)
 	defer close(errorChan)
 	go func() {
-		errorChan <- database.UserDB.FindOne(context.TODO(), bson.M{"email": U.Email, "verified": true}).Decode(user)
+		errorChan <- database.UserDB.FindOne(context.TODO(), bson.M{"email": U.Email}).Decode(user)
 	}()
 	err := <-errorChan
 	if err != nil {

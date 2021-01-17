@@ -14,7 +14,6 @@ var Jwt = func(next http.Handler) http.Handler {
 		openRoutes := []string{
 			"/api/v1/signup",
 			"/api/v1/login",
-			"/api/v1/upload",
 			"/logs",
 		}
 		requestPath := r.URL.Path
@@ -51,6 +50,7 @@ var Jwt = func(next http.Handler) http.Handler {
 		}
 		i := strings.Split(tk.UserId, "_")
 		UserID := i[0]
+
 		//fmt.Print("This is the Users ID: ", UserID)
 		ctx := context.WithValue(r.Context(), "user", UserID)
 		r = r.WithContext(ctx)
